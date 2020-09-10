@@ -6,7 +6,7 @@
 /*   By: lguiller <lguiller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/07 13:29:35 by lguiller          #+#    #+#             */
-/*   Updated: 2020/09/09 14:20:41 by lguiller         ###   ########.fr       */
+/*   Updated: 2020/09/10 14:37:51 by lguiller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,21 +54,34 @@ static void	start_rendering(SDL_Renderer *renderer) {
 	Game		board(WIDTH, LENGTH);
 	SDL_Event	event;
 	SDL_Rect	r;
+	int			mouseX;
+	int			mouseY;
+	bool		start(1);
 
 	r.w = SIZE;
 	r.h = SIZE;
 	rand_board(board);
 	while (1) {
 		SDL_PollEvent(&event);
-		if (event.type == SDL_QUIT)
+		if (event.type == SDL_QUIT || event.key.keysym.sym == SDLK_ESCAPE)
 			break;
 		SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
 		SDL_RenderClear(renderer);
 		SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 		print_cell(renderer, r, board);
+		if (event.button.button == SDL_BUTTON_LEFT && SDL_GetMouseState(&mouseX, &mouseY))
+			board.board[mouseY / SIZE][mouseX / SIZE] = 1;
+		if (event.key.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_RETURN)
+			rand_board(board);
+		if (event.key.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_BACKSPACE)
+			board.clear();
+		if (event.key.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE)
+			start = !start;
+		if (start) {
 		next_cycle(board);
-		for (int i(0) ; i < NB_RAND_CELLS ; ++i)
-			board.board[rand() % LENGTH][rand() % WIDTH] = 1;
+			for (int i(0) ; i < NB_RAND_CELLS ; ++i)
+				board.board[rand() % LENGTH][rand() % WIDTH] = 1;
+		}
 		SDL_RenderPresent(renderer);
 		SDL_Delay(DELAY);
 	}

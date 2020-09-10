@@ -6,7 +6,7 @@
 /*   By: lguiller <lguiller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/07 13:35:02 by lguiller          #+#    #+#             */
-/*   Updated: 2020/09/09 13:43:44 by lguiller         ###   ########.fr       */
+/*   Updated: 2020/09/10 13:55:58 by lguiller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ public:
 
 	Game	&operator=(const Game &rhs);
 	int		neyghbors(int x, int y);
+	void	clear(void);
 
 	int		width;
 	int		length;

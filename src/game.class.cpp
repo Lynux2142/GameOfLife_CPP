@@ -6,7 +6,7 @@
 /*   By: lguiller <lguiller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/07 13:42:00 by lguiller          #+#    #+#             */
-/*   Updated: 2020/09/09 13:55:56 by lguiller         ###   ########.fr       */
+/*   Updated: 2020/09/10 13:57:19 by lguiller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,10 @@ int		Game::neyghbors(int i, int j) {
 		}
 	}
 	return neyghbors;
+}
+
+void	Game::clear(void) {
+	for (int y(0) ; y < this->length ; ++y)
+		for (int x(0) ; x < this->width ; ++x)
+			this->board[y][x] = 0;
 }
