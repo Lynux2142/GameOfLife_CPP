@@ -6,7 +6,7 @@
 /*   By: lguiller <lguiller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/07 13:29:35 by lguiller          #+#    #+#             */
-/*   Updated: 2020/09/10 14:37:51 by lguiller         ###   ########.fr       */
+/*   Updated: 2020/09/10 15:04:47 by lguiller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,9 @@ static void	start_rendering(SDL_Renderer *renderer) {
 	rand_board(board);
 	while (1) {
 		SDL_PollEvent(&event);
-		if (event.type == SDL_QUIT || event.key.keysym.sym == SDLK_ESCAPE)
-			break;
+		if (event.type == SDL_QUIT
+			|| (event.key.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE))
+			break ;
 		SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
 		SDL_RenderClear(renderer);
 		SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
