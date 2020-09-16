@@ -6,7 +6,7 @@
 /*   By: lguiller <lguiller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/07 13:29:35 by lguiller          #+#    #+#             */
-/*   Updated: 2020/09/16 15:50:30 by lguiller         ###   ########.fr       */
+/*   Updated: 2020/09/16 16:48:50 by lguiller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static void	start_rendering(SDL_Renderer *renderer) {
 			SDL_GetMouseState(&mouseX, &mouseY);
 			if (event.button.button == SDL_BUTTON_LEFT)
 				board.board[mouseY / SIZE][mouseX / SIZE] = 1;
-			else if (event.button.button == SDL_BUTTON_MIDDLE)
+			else if (event.button.button == SDL_BUTTON_RIGHT || event.button.button == 4)
 				board.board[mouseY / SIZE][mouseX / SIZE] = 0;
 		}
 		else if (event.key.type == SDL_KEYDOWN) {
