@@ -6,7 +6,7 @@
 /*   By: lguiller <lguiller@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/07 13:29:35 by lguiller          #+#    #+#             */
-/*   Updated: 2020/09/10 15:04:47 by lguiller         ###   ########.fr       */
+/*   Updated: 2020/09/16 15:50:30 by lguiller         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ static void	print_cell(SDL_Renderer *renderer, SDL_Rect r, Game board) {
 	for (int y(0) ; y < board.length ; ++y) {
 		for (int x(0) ; x < board.width ; ++x) {
 			if (board.board[y][x] == 1) {
-				r.x = x * SIZE;
-				r.y = y * SIZE;
+				r.x = x * SIZE + 1;
+				r.y = y * SIZE + 1;
 				SDL_RenderFillRect(renderer, &r);
 			}
 		}
@@ -58,28 +58,35 @@ static void	start_rendering(SDL_Renderer *renderer) {
 	int			mouseY;
 	bool		start(1);
 
-	r.w = SIZE;
-	r.h = SIZE;
+	r.w = SIZE - 2;
+	r.h = SIZE - 2;
 	rand_board(board);
 	while (1) {
 		SDL_PollEvent(&event);
 		if (event.type == SDL_QUIT
 			|| (event.key.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE))
 			break ;
+		if (event.type == SDL_MOUSEBUTTONDOWN || event.type == SDL_MOUSEMOTION) {
+			SDL_GetMouseState(&mouseX, &mouseY);
+			if (event.button.button == SDL_BUTTON_LEFT)
+				board.board[mouseY / SIZE][mouseX / SIZE] = 1;
+			else if (event.button.button == SDL_BUTTON_MIDDLE)
+				board.board[mouseY / SIZE][mouseX / SIZE] = 0;
+		}
+		else if (event.key.type == SDL_KEYDOWN) {
+			if (event.key.keysym.sym == SDLK_RETURN)
+				rand_board(board);
+			else if (event.key.keysym.sym == SDLK_BACKSPACE)
+				board.clear();
+			else if (event.key.keysym.sym == SDLK_SPACE)
+				start = !start;
+		}
 		SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
 		SDL_RenderClear(renderer);
 		SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
 		print_cell(renderer, r, board);
-		if (event.button.button == SDL_BUTTON_LEFT && SDL_GetMouseState(&mouseX, &mouseY))
-			board.board[mouseY / SIZE][mouseX / SIZE] = 1;
-		if (event.key.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_RETURN)
-			rand_board(board);
-		if (event.key.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_BACKSPACE)
-			board.clear();
-		if (event.key.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_SPACE)
-			start = !start;
 		if (start) {
-		next_cycle(board);
+			next_cycle(board);
 			for (int i(0) ; i < NB_RAND_CELLS ; ++i)
 				board.board[rand() % LENGTH][rand() % WIDTH] = 1;
 		}
